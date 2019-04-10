@@ -1,0 +1,146 @@
+v:shortcut = Dictionary{
+    "Shortcut Name":"Cookie Clicker",
+    "Version":"2.0",
+    "Author":"@heyitzspencer",
+    "RoutineHub ID":"962"
+}
+
+GetFile "iCloud Drive" false "Cookie Clicker/save.json" false
+
+v:save = GetDictionaryFromInput
+
+Text ""
+
+v:buildings = GetDictionaryFromInput
+
+
+If ^(s:shortcutinput) "Contains" s:actioninput
+
+Otherwise
+    Dictionary{
+        "function":"shortcut"
+    }
+    
+    RunShortcut v:shortcut{as:Dictionary,key:"Shortcut Name"} false
+    
+    ExitShortcut
+End # if
+
+v:input = GetVariable s:shortcutinput
+
+v:input{as:Dictionary,key:function}
+
+If "Equals" "shortcut"
+    CreateFolder "iCloud Drive" "Cookie Clicker/"
+    GetFile "iCloud Drive" false "Cookie Clicker/save.json" false
+    
+    If "Contains" s:actioninput
+    
+    Otherwise
+        Dictionary
+    End # if
+End # function
+
+If "Equals" "store"
+    mv:peak = GetDictionaryValue ^(v:save) "Value" "bank.peak"
+    GetDictionaryValue ^(v:buildings) "Value" "buildings"
+    RepeatWithEach
+        GetDictionaryValue "Value" "cost"
+        If "Is Less Than" mv:peak
+            v:"Repeat Item"
+        Otherwise
+            Nothing
+        End # if
+    End # repeat
+    SetVariable v:available
+    AddToVariable v:options
+
+    v:available
+    Count "Items"
+    If "Equals" 16
+    Otherwise
+        mv:index = Calculate "+" 1
+
+        
+
+        GetDictionaryValue ^(v:buildings) "Value" "buildings"
+        mv:hiddenBuilding = GetItemFromList "Item At Index" mv:index
+        SetDictionaryValue "prettyName" "???"
+        SetDictionaryValue "description" "???"
+        SetDictionaryValue "unlocked" "false"
+        SetDictionaryValue "icon" "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"
+        AddToVariable v:available
+    End # if
+
+    v:available
+    RepeatWithEach
+        mv:name = GetDictionaryValue ^(v:"Repeat Item") "Value" "name"
+        mv:prettyName = GetDictionaryValue ^(v:"Repeat Item") "Value" "prettyName"
+        mv:description = GetDictionaryValue ^(v:"Repeat Item") "Value" "description"
+        mv:icon = GetDictionaryValue ^(v:"Repeat Item") "Value" "icon"
+        
+        mv:cost = GetDictionaryValue ^(v:"Repeat Item") "Value" "cost"
+        
+        mv:purchased = GetDictionaryValue ^(v:save) "Value" "buildings.\(mv:name).purchased"
+        mv:gifted = GetDictionaryValue ^(v:save) "Value" "buildings.\(mv:name).gifted"
+        mv:owned = Calculate ^(mv:purchased) "+" (mv:gifted)
+        
+        mv:price = RoundNumber ^(Calculate ^(mv:cost) "×" (Calculate ^(Number 1.15) "…" "x^y" mv:purchased)) "Left of Decimal" "Always Round Up" 
+        mv:formattedPrice = RunShortcut ^(Dictionary{function:format,value:mv:price}) v:shortcut{as:Dictionary,key:"Shortcut Name"} false
+        
+        Text
+        |BEGIN:VCARD
+        |VERSION:3.0
+        |N;CHARSET=utf-8:\(mv:prettyName) (\(mv:owned));;;
+        |ORG;CHARSET=utf-8:costs \(mv:formattedPrice) cookies;;;
+        |NOTE:\(v:"Repeat Item")
+        |PHOTO;ENCODING=b:\(mv:icon)
+        |END:VCARD
+        
+    End # repeat
+    CombineText "New Lines"
+    mv:temp = SetName " .vcf"
+    
+    GetVariable mv:temp{as:Contact}
+    ChooseFromList
+End # function
+
+If "Equals" "format"
+    Number v:input{as:Dictionary,key:value}
+    mv:count = Count "Characters"
+    If "Is Greater Than" 6
+        Calculate "…" "Modulus" 3
+        If "Equals" 0 -> mv:leadingDigits
+            Number 3
+        Otherwise
+        End  -> mv:leadingDigits # if
+        
+        mv:splitInput = SplitText ^(v:input{as:Dictionary,key:value}) "Every Character"
+        GetItemFromList "Items in Range" 1 mv:leadingDigits
+        mv:first = CombineText "Custom" ""
+        
+        Number mv:leadingDigits
+        mv:leadingDigitsPlus1 = Calculate "+" 1
+        mv:leadingDigitsPlus3 = Calculate "+" 2
+        
+        GetItemFromList ^(mv:splitInput) "Items in Range" mv:leadingDigitsPlus1 mv:leadingDigitsPlus3
+        CombineText
+        mv:second = RoundNumber "Right of Decimal" "Normal" 3
+        
+        Calculate ^(mv:count) "-" mv:leadingDigits
+        mv:result = Calculate "+" 1
+        
+        Text '{"25":"septillion","55":"septendecillion","10":"billion","40":"duodecillion","19":"quintillion","49":"quindecillion","34":"decillion","64":"vigintillion","28":"octillion","58":"octodecillion","13":"trillion","43":"tredecillion","37":"undecillion","22":"sextillion","52":"sexdecillion","16":"quadrillion","7":"million","46":"quattuordecillion","31":"nonillion","61":"novemdecillion"}'
+        mv:third = GetDictionaryValue "Value" mv:result
+        
+        Text "\(mv:first).\(mv:second)"
+        GetNumbersFromInput
+        RoundNumber "Right of Decimal" "Normal" 3 -> mv:firstSecond
+
+        Text "\(mv:firstSecond) \(mv:third)"
+    Otherwise
+        FormatNumber ^(v:input{as:Dictionary,key:value}) 0
+    End # if
+    ExitShortcut
+End # function
+
